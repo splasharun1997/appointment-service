@@ -1,0 +1,28 @@
+name: CI
+on:
+  workflow_dispatch:
+
+
+jobs:
+  docker:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build and push the tagged docker image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+        ECR_REPOSITORY: "group31-hu3-repo-2"
+        AWS_ACCOUNT_ID: "539935451710"
+        AWS_REGION: "us-east-1"
+        IMAGE_TAG: latest
+      run: |+
+        export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+        export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                      
+        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+        docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest .
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY --all-tags
+                

@@ -1,0 +1,31 @@
+name: CD
+on:
+  workflow_dispatch:
+
+
+jobs:
+  Deploy:
+    name: helm
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Upgrade
+      env:
+        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+        ECR_REPOSITORY: "group31-hu3-repo-2"
+        AWS_ACCOUNT_ID: "539935451710"
+        CLUSTER_NAME: "group31-hu3"
+        AWS_REGION: "us-east-1"
+        IMAGE_TAG: latest
+        RELEASE_NAME: "appointmentservice"
+        NAMESPACE: default
+      run: |+
+        export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+        export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+        aws eks update-kubeconfig --name $CLUSTER_NAME --region $AWS_REGION
+        helm upgrade --install --values deployment-config/values.yaml --set image.tag=latest --set image.pullPolicy=Always $RELEASE_NAME deployment-config -n $NAMESPACE
+        echo "Deployment successful"
+                

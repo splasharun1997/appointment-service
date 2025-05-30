@@ -1,0 +1,22 @@
+{
+  "name": "appointment-service",
+  "version": "1.0.0",
+  "description": "Appointment-service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://splasharun1997@github.com/splasharun1997/appointment-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/splasharun1997/appointment-service/issues"
+  },
+  "homepage": "https://github.com/splasharun1997/appointment-service#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
