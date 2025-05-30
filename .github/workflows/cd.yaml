@@ -13,7 +13,6 @@ jobs:
 
     - name: Upgrade
       env:
-        ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
         ECR_REPOSITORY: "group31-hu3-repo-2"
         AWS_ACCOUNT_ID: "539935451710"
         CLUSTER_NAME: "group31-hu3"
